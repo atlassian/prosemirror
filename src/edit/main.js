@@ -161,6 +161,18 @@ class ProseMirror {
     else if (opts.place)
       opts.place(this.wrapper)
 
+    // does not support opts.place being a function and asynchronously mount prosemirror
+    if (opts.place) {
+      this.root = this.wrapper.parentNode
+
+      // loop if root is not document (in light dom)
+      // only shadowRoot has property (in shadow dom)
+      while (this.root!== document && !this.root.host) {
+        this.root = this.root.parentNode
+      }
+    } else
+      this.root = document
+
     this.setDocInner(opts.doc)
     draw(this, this.doc)
     this.content.contentEditable = true
@@ -336,7 +348,7 @@ class ProseMirror {
   flush() {
     this.unscheduleFlush()
 
-    if (!document.body.contains(this.wrapper) || !this.operation) return false
+    if (!this.root.contains(this.wrapper) || !this.operation) return false
     this.on.flushing.dispatch()
 
     let op = this.operation, redrawn = false
@@ -470,7 +482,7 @@ class ProseMirror {
   // Query whether the editor has focus.
   hasFocus() {
     if (this.sel.range instanceof NodeSelection)
-      return document.activeElement == this.content
+      return this.pm.root.activeElement == this.content
     else
       return hasFocus(this)
   }
