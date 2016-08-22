@@ -65,14 +65,14 @@ class SelectionState {
   // : () → bool
   // Whether the DOM selection has changed from the last known state.
   domChanged() {
-    let sel = window.getSelection()
+    let sel = this.pm.root.getSelection()
     return sel.anchorNode != this.lastAnchorNode || sel.anchorOffset != this.lastAnchorOffset ||
       sel.focusNode != this.lastHeadNode || sel.focusOffset != this.lastHeadOffset
   }
 
   // Store the current state of the DOM selection.
   storeDOMState() {
-    let sel = window.getSelection()
+    let sel = this.pm.root.getSelection()
     this.lastAnchorNode = sel.anchorNode; this.lastAnchorOffset = sel.anchorOffset
     this.lastHeadNode = sel.focusNode; this.lastHeadOffset = sel.focusOffset
   }
@@ -83,7 +83,7 @@ class SelectionState {
   readFromDOM() {
     if (!hasFocus(this.pm) || !this.domChanged()) return false
 
-    let {range, adjusted} = selectionFromDOM(this.pm.doc, this.range.head)
+    let {range, adjusted} = selectionFromDOM(this.pm, this.range.head)
     this.setAndSignal(range)
 
     if (range instanceof NodeSelection || adjusted) {
@@ -116,7 +116,7 @@ class SelectionState {
       this.pm.content.classList.add("ProseMirror-nodeselection")
       this.lastNode = dom
     }
-    let range = document.createRange(), sel = window.getSelection()
+    let range = document.createRange(), sel = this.pm.root.getSelection()
     range.selectNode(dom)
     sel.removeAllRanges()
     sel.addRange(range)
@@ -130,7 +130,7 @@ class SelectionState {
     let anchor = DOMFromPos(this.pm, this.range.anchor)
     let head = DOMFromPos(this.pm, this.range.head)
 
-    let sel = window.getSelection(), range = document.createRange()
+    let sel = this.pm.root.getSelection(), range = document.createRange()
     if (sel.extend) {
       range.setEnd(anchor.node, anchor.offset)
       range.collapse(false)
@@ -311,8 +311,9 @@ class SelectionToken {
   }
 }
 
-function selectionFromDOM(doc, oldHead) {
-  let sel = window.getSelection()
+function selectionFromDOM(pm, oldHead) {
+  let sel = pm.root.getSelection()
+  const doc = pm.doc
   let {pos: head, inLeaf: headLeaf} = posFromDOM(sel.focusNode, sel.focusOffset)
   if (headLeaf > -1 && sel.isCollapsed) {
     let $leaf = doc.resolve(headLeaf)
@@ -335,8 +336,8 @@ function selectionFromDOM(doc, oldHead) {
 }
 
 function hasFocus(pm) {
-  if (document.activeElement != pm.content) return false
-  let sel = window.getSelection()
+  if (pm.root.activeElement != pm.content) return false
+  let sel = pm.root.getSelection()
   return sel.rangeCount && contains(pm.content, sel.anchorNode)
 }
 exports.hasFocus = hasFocus
