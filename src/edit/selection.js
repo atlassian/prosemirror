@@ -83,7 +83,7 @@ class SelectionState {
   readFromDOM() {
     if (!hasFocus(this.pm) || !this.domChanged()) return false
 
-    let {range, adjusted} = selectionFromDOM(this.pm.doc, this.range.head)
+    let {range, adjusted} = selectionFromDOM(this.pm.doc, this.range.head, this.pm.root)
     this.setAndSignal(range)
 
     if (range instanceof NodeSelection || adjusted) {
@@ -116,7 +116,7 @@ class SelectionState {
       this.pm.content.classList.add("ProseMirror-nodeselection")
       this.lastNode = dom
     }
-    let range = document.createRange(), sel = this.pm.getSelection()
+    let range = document.createRange(), sel = this.pm.root.getSelection()
     range.selectNode(dom)
     sel.removeAllRanges()
     sel.addRange(range)
@@ -130,7 +130,7 @@ class SelectionState {
     let anchor = DOMFromPos(this.pm, this.range.anchor)
     let head = DOMFromPos(this.pm, this.range.head)
 
-    let sel = this.pm.getSelection(), range = document.createRange()
+    let sel = this.pm.root.getSelection(), range = document.createRange()
     if (sel.extend) {
       range.setEnd(anchor.node, anchor.offset)
       range.collapse(false)
@@ -355,8 +355,8 @@ class SelectionToken {
   }
 }
 
-function selectionFromDOM(doc, oldHead) {
-  let sel = this.pm.getSelection()
+function selectionFromDOM(doc, oldHead, root) {
+  let sel = root.getSelection()
   let {pos: head, inLeaf: headLeaf} = posFromDOM(sel.focusNode, sel.focusOffset)
   if (headLeaf > -1 && sel.isCollapsed) {
     let $leaf = doc.resolve(headLeaf), node = $leaf.nodeAfter
@@ -382,7 +382,7 @@ function selectionFromDOM(doc, oldHead) {
 
 function hasFocus(pm) {
   if (pm.root.activeElement != pm.content) return false
-  let sel = this.pm.getSelection()
+  let sel = pm.root.getSelection()
   return sel.rangeCount && contains(pm.content, sel.anchorNode)
 }
 exports.hasFocus = hasFocus

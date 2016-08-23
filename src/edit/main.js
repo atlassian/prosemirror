@@ -188,16 +188,15 @@ class ProseMirror {
     this.options.plugins.forEach(plugin => plugin.attach(this))
 
     // get the root of prosemirror since it could be in a shadow dom
-    if (opts.place && opts.place.host) {
-      const div = window.document.createElement('div')
-      var parent = opts.place
+    if (opts.place) {
+      this.root = opts.place
 
-      while (parent.parentNode && parent.parentNode !== parent.host) {
-        parent = parent.parentNode
+      // loop if root is not document (in light dom)
+      // only shadowRoot has property (in shadow dom)
+      while (this.root!== document && !this.root.host) {
+        this.root = this.root.parentNode;
       }
     }
-
-    this.root = parent || document
   }
 
   // :: (string) → any
@@ -351,7 +350,7 @@ class ProseMirror {
   flush() {
     this.unscheduleFlush()
 
-    if (!document.body.contains(this.wrapper) || !this.operation) return false
+    if (!this.root.contains(this.wrapper) || !this.operation) return false
     this.on.flushing.dispatch()
 
     let op = this.operation, redrawn = false
