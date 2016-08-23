@@ -156,21 +156,22 @@ class ProseMirror {
       domDrop: new DOMSubscription
     }
 
-    if (opts.place && opts.place.appendChild) {
-      this.root = opts.place
+    if (opts.place && opts.place.appendChild)
+      opts.place.appendChild(this.wrapper)
+    else if (opts.place)
+      opts.place(this.wrapper)
+
+    // does not support opts.place being a function and asynchronously mount prosemirror
+    if (opts.place) {
+      this.root = this.wrapper.parentNode
 
       // loop if root is not document (in light dom)
       // only shadowRoot has property (in shadow dom)
       while (this.root!== document && !this.root.host) {
         this.root = this.root.parentNode
       }
-
-      opts.place.appendChild(this.wrapper)
-    }
-    else if (opts.place)
-      opts.place(this.wrapper)
-
-    this.root = this.root || document
+    } else
+      this.root = document
 
     this.setDocInner(opts.doc)
     draw(this, this.doc)
