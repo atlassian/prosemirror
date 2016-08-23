@@ -356,7 +356,7 @@ class SelectionToken {
 }
 
 function selectionFromDOM(pm, oldHead) {
-  let sel = rm.root.getSelection()
+  let sel = pm.root.getSelection()
   const doc = pm.doc
   let {pos: head, inLeaf: headLeaf} = posFromDOM(sel.focusNode, sel.focusOffset)
   if (headLeaf > -1 && sel.isCollapsed) {
