@@ -169,8 +169,9 @@ class ProseMirror {
     }
     else if (opts.place) {
       opts.place(this.wrapper)
-      this.root = document
     }
+
+    this.root = this.root || document
 
     this.setDocInner(opts.doc)
     draw(this, this.doc)
