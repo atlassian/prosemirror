@@ -194,7 +194,7 @@ class ProseMirror {
       // loop if root is not document (in light dom)
       // only shadowRoot has property (in shadow dom)
       while (this.root!== document && !this.root.host) {
-        this.root = this.root.parentNode;
+        this.root = this.root.parentNode
       }
     }
   }
