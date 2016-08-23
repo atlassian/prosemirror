@@ -70,7 +70,7 @@ class TooltipMenu {
   }
 
   selectionCoords() {
-    let pos = this.config.position == "above" ? topCenterOfSelection(this.pm.root) : bottomCenterOfSelection()
+    let pos = this.config.position == "above" ? topCenterOfSelection(this.pm.root) : bottomCenterOfSelection(this.pm.root)
     if (pos.top != 0) return pos
     let realPos = this.pm.coordsAtPos(this.pm.selection.from)
     return {left: realPos.left, top: this.config.position == "above" ? realPos.top : realPos.bottom}
@@ -133,8 +133,8 @@ function topCenterOfSelection(root) {
   return {top, left: (left + right) / 2}
 }
 
-function bottomCenterOfSelection() {
-  let range = this.pm.root.getSelection().getRangeAt(0), rects = range.getClientRects()
+function bottomCenterOfSelection(root) {
+  let range = root.getSelection().getRangeAt(0), rects = range.getClientRects()
   if (!rects.length) {
     let rect = range.getBoundingClientRect()
     return {left: rect.left, top: rect.bottom}
