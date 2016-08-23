@@ -167,9 +167,8 @@ class ProseMirror {
 
       opts.place.appendChild(this.wrapper)
     }
-    else if (opts.place) {
+    else if (opts.place)
       opts.place(this.wrapper)
-    }
 
     this.root = this.root || document
 
