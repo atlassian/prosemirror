@@ -83,7 +83,7 @@ class SelectionState {
   readFromDOM() {
     if (!hasFocus(this.pm) || !this.domChanged()) return false
 
-    let {range, adjusted} = selectionFromDOM(this.pm.doc, this.range.head, this.pm.root)
+    let {range, adjusted} = selectionFromDOM(this.pm, this.range.head)
     this.setAndSignal(range)
 
     if (range instanceof NodeSelection || adjusted) {
@@ -355,8 +355,9 @@ class SelectionToken {
   }
 }
 
-function selectionFromDOM(doc, oldHead, root) {
-  let sel = root.getSelection()
+function selectionFromDOM(pm, oldHead) {
+  let sel = rm.root.getSelection()
+  const doc = pm.doc
   let {pos: head, inLeaf: headLeaf} = posFromDOM(sel.focusNode, sel.focusOffset)
   if (headLeaf > -1 && sel.isCollapsed) {
     let $leaf = doc.resolve(headLeaf), node = $leaf.nodeAfter
