@@ -162,9 +162,8 @@ class ProseMirror {
       opts.place(this.wrapper)
 
     // does not support opts.place being a function and asynchronously mount prosemirror
-    if (opts.place) {
-      this.root = this.wrapper.parentNode
-
+    this.root = this.wrapper.parentNode
+    if (this.root) {
       // loop if root is not document (in light dom)
       // only shadowRoot has property (in shadow dom)
       while (this.root!== document && !this.root.host) {
@@ -482,7 +481,7 @@ class ProseMirror {
   // Query whether the editor has focus.
   hasFocus() {
     if (this.sel.range instanceof NodeSelection)
-      return this.pm.root.activeElement == this.content
+      return this.root.activeElement == this.content
     else
       return hasFocus(this)
   }
