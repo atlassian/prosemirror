@@ -311,15 +311,21 @@ class SelectionToken {
   }
 }
 
+function isCollapsed(sel) {
+  // Selection.isCollapsed is broken in Chrome 52.
+  return sel.focusNode === sel.anchorNode && sel.focusOffset === sel.anchorOffset;
+}
+exports.isCollapsed = isCollapsed;
+
 function selectionFromDOM(pm, oldHead) {
   let sel = pm.root.getSelection()
   const doc = pm.doc
   let {pos: head, inLeaf: headLeaf} = posFromDOM(sel.focusNode, sel.focusOffset)
-  if (headLeaf > -1 && sel.isCollapsed) {
+  if (headLeaf > -1 && isCollapsed(sel)) {
     let $leaf = doc.resolve(headLeaf)
     if ($leaf.nodeAfter.type.selectable) return {range: new NodeSelection($leaf), adjusted: true}
   }
-  let anchor = sel.isCollapsed ? head : posFromDOM(sel.anchorNode, sel.anchorOffset).pos
+  let anchor = isCollapsed(sel) ? head : posFromDOM(sel.anchorNode, sel.anchorOffset).pos
 
   let range = findSelectionNear(doc.resolve(head), oldHead != null && oldHead < head ? 1 : -1)
   if (range instanceof TextSelection) {
