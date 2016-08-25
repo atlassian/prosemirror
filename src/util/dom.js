@@ -62,9 +62,23 @@ exports.insertCSS = insertCSS
 // This is called when a ProseMirror instance is created, to ensure
 // the CSS is in the DOM.
 function ensureCSSAdded(pm) {
-  if (!pm.cssNode) {
+  if (pm.cssNode) return
+
+  if (pm.root === document) {
+    const cssNode = document.head.querySelector('#pm-styles');
+
+    if (cssNode) {
+      pm.cssNode = cssNode
+    } else {
+      pm.cssNode = document.createElement("style")
+      pm.cssNode.textContent = "/* ProseMirror CSS */\n" + accumulatedCSS
+      pm.cssNode.id = 'pm-styles'
+      document.head.insertBefore(pm.cssNode, document.head.firstChild)
+    }
+  } else {
     pm.cssNode = document.createElement("style")
     pm.cssNode.textContent = "/* ProseMirror CSS */\n" + accumulatedCSS
+
     pm.wrapper.appendChild(pm.cssNode)
   }
 }
