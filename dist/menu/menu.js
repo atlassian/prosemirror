@@ -36,7 +36,6 @@ var prefix = "ProseMirror-menu";
 
 var MenuItem = function () {
   // :: (MenuItemSpec)
-
   function MenuItem(spec) {
     _classCallCheck(this, MenuItem);
 
@@ -144,6 +143,7 @@ exports.MenuItem = MenuItem;
 // Defines which event on the command's DOM representation should
 // trigger the execution of the command. Defaults to mousedown.
 
+
 // ;; A drop-down menu, displayed as a label with a downwards-pointing
 // triangle to the right of it.
 
@@ -165,7 +165,6 @@ var Dropdown = function () {
   //
   // **`css`**`: string`
   //   : When given, adds an extra set of CSS styles to the menu control.
-
   function Dropdown(content, options) {
     _classCallCheck(this, Dropdown);
 
@@ -242,7 +241,6 @@ var DropdownSubmenu = function () {
   //
   // **`label`**`: string`
   //   : The label to show on the submenu.
-
   function DropdownSubmenu(content, options) {
     _classCallCheck(this, DropdownSubmenu);
 

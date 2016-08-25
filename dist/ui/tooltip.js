@@ -30,7 +30,6 @@ var Tooltip = function () {
   // direction. The direction can be `"above"`, `"below"`, `"right"`,
   // `"left"`, or `"center"`. In the latter case, the tooltip has no arrow
   // and is positioned centered in its wrapper node.
-
   function Tooltip(wrapper, options) {
     var _this = this;
 

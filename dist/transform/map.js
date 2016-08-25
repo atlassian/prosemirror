@@ -71,7 +71,6 @@ var PosMap = function () {
   // Create a position map. The modifications to the document are
   // represented as an array of numbers, in which each group of three
   // represents a modified chunk as `[start, oldSize, newSize]`.
-
   function PosMap(ranges) {
     var inverted = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
@@ -186,7 +185,6 @@ PosMap.empty = new PosMap([]);
 
 var Remapping = function () {
   // :: (?[PosMap], ?[PosMap])
-
   function Remapping() {
     var head = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
     var tail = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];

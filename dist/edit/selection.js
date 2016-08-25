@@ -328,7 +328,6 @@ var TextSelection = function (_Selection) {
     var inv = $anchor.pos > $head.pos;
 
     // :: ResolvedPos The resolved anchor of the selection.
-
     var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(TextSelection).call(this, inv ? $head : $anchor, inv ? $anchor : $head));
 
     _this2.$anchor = $anchor;
@@ -392,14 +391,12 @@ var NodeSelection = function (_Selection2) {
   // Create a node selection. Does not verify the validity of its
   // argument. Use `ProseMirror.setNodeSelection` for an easier,
   // error-checking way to create a node selection.
-
   function NodeSelection($from) {
     _classCallCheck(this, NodeSelection);
 
     var $to = $from.plusOne();
 
     // :: Node The selected node.
-
     var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(NodeSelection).call(this, $from, $to));
 
     _this3.node = $from.nodeAfter;

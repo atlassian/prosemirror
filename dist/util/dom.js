@@ -53,18 +53,32 @@ exports.contains = contains;
 var accumulatedCSS = "",
     cssNode = null;
 
-function insertCSS(css) {
-  if (cssNode) cssNode.textContent += css;else accumulatedCSS += css;
+function insertCSS(pm, css) {
+  if (pm.cssNode) pm.cssNode.textContent += css;else accumulatedCSS += css;
 }
 exports.insertCSS = insertCSS;
 
 // This is called when a ProseMirror instance is created, to ensure
 // the CSS is in the DOM.
-function ensureCSSAdded() {
-  if (!cssNode) {
-    cssNode = document.createElement("style");
-    cssNode.textContent = "/* ProseMirror CSS */\n" + accumulatedCSS;
-    document.head.insertBefore(cssNode, document.head.firstChild);
+function ensureCSSAdded(pm) {
+  if (pm.cssNode) return;
+
+  if (pm.root === document) {
+    var _cssNode = document.head.querySelector('#pm-styles');
+
+    if (_cssNode) {
+      pm.cssNode = _cssNode;
+    } else {
+      pm.cssNode = document.createElement("style");
+      pm.cssNode.textContent = "/* ProseMirror CSS */\n" + accumulatedCSS;
+      pm.cssNode.id = 'pm-styles';
+      document.head.insertBefore(pm.cssNode, document.head.firstChild);
+    }
+  } else {
+    pm.cssNode = document.createElement("style");
+    pm.cssNode.textContent = "/* ProseMirror CSS */\n" + accumulatedCSS;
+
+    pm.wrapper.appendChild(pm.cssNode);
   }
 }
 exports.ensureCSSAdded = ensureCSSAdded;

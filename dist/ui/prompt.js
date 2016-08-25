@@ -20,7 +20,6 @@ var FieldPrompt = function () {
   // :: (ProseMirror, string, [Field])
   // Construct a prompt. Note that this does not
   // [open](#FieldPrompt.open) it yet.
-
   function FieldPrompt(pm, title, fields) {
     var _this = this;
 
@@ -183,7 +182,6 @@ var Field = function () {
   // **`validate`**`: ?(any) → ?string`
   //   : A function to validate the given value. Should return an
   //     error message if it is not valid.
-
   function Field(options) {
     _classCallCheck(this, Field);
 

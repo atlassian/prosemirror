@@ -397,7 +397,6 @@ var Attribute = function () {
   // Attributes that have no default or compute property must be
   // provided whenever a node or mark of a type that has them is
   // created.
-
   function Attribute() {
     var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -564,7 +563,6 @@ exports.MarkType = MarkType;
 var Schema = function () {
   // :: (SchemaSpec, ?any)
   // Construct a schema from a specification.
-
   function Schema(spec, data) {
     _classCallCheck(this, Schema);
 

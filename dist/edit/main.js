@@ -4,8 +4,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-require("./css");
-
 var _require = require("../util/map");
 
 var Map = _require.Map;
@@ -89,13 +87,10 @@ var ProseMirror = function () {
   // Construct a new editor from a set of [options](#edit_options)
   // and, if it has a [`place`](#place) option, add it to the
   // document.
-
   function ProseMirror(opts) {
     var _this = this;
 
     _classCallCheck(this, ProseMirror);
-
-    ensureCSSAdded();
 
     opts = this.options = parseOptions(opts);
     // :: Schema
@@ -235,6 +230,9 @@ var ProseMirror = function () {
         this.root = this.root.parentNode;
       }
     } else this.root = document;
+
+    require("./css")(this);
+    ensureCSSAdded(this);
 
     this.setDocInner(opts.doc);
     draw(this, this.doc);

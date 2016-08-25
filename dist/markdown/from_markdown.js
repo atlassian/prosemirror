@@ -225,7 +225,6 @@ var MarkdownParser = function () {
   //     [markdown-it
   //     token](https://markdown-it.github.io/markdown-it/#Token) and
   //     returns an attribute object.
-
   function MarkdownParser(schema, tokenizer, tokens) {
     _classCallCheck(this, MarkdownParser);
 

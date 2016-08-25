@@ -299,7 +299,6 @@ var listTags = { ol: true, ul: true };
 
 var DOMParseState = function () {
   // : (Schema, Object, NodeBuilder)
-
   function DOMParseState(schema, options, top) {
     _classCallCheck(this, DOMParseState);
 
