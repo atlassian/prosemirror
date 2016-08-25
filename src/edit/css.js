@@ -64,6 +64,6 @@ li.ProseMirror-selectednode:after {
 
 `
 
-module.exports = () => {
+module.exports = (pm) => {
   insertCSS(pm, css)
 };
